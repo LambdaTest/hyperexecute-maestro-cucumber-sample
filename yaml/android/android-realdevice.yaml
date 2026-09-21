@@ -1,0 +1,69 @@
+# Define the version of the configuration file
+version: "0.2"
+
+# Enable autosplit for test execution
+autosplit: true
+
+# Set the concurrency level for test execution (2 devices in parallel)
+concurrency: 2
+
+# Specify the target platform for test execution (Android in this case)
+runson: android
+
+# Dynamic allocation requires static test discovery, but we use dynamic
+# discovery (./discover/android.sh), so this must stay disabled.
+dynamicAllocation: false
+
+runtime:
+  - language: java
+    version: "21"
+  - language: node
+    version: "18"
+
+# Test framework configuration
+framework:
+  name: raw
+  args:
+    # You can use regex here, e.g. ["Pixel 6-.*"] or [".*-.*"]
+    # devices: ["Pixel 6-14"]
+    devices: [".*-.*", ".*-.*", ".*-.*"]
+    video: true
+    deviceLog: true
+    appPath: apps/sample.apk
+    buildName: maestro-cucumber-android-realdevice
+    queueTimeout: 600
+    region: ap
+    disableReleaseDevice: true
+    isRealMobile: true
+    reservation: false
+    network: true
+    platformName: android
+
+env:
+  MAESTRO: true
+  MAESTRO_LOGS_DIR: MaestroLogs
+
+pre:
+  - rm -rf node_modules
+  - npm install --no-audit --no-fund
+  - chmod +x ./support/setup-android.sh
+  - chmod +x ./support/run-android-realdevice.sh
+  - chmod +x ./discover/android.sh
+  - ./support/setup-android.sh
+
+testDiscovery:
+  command: ./discover/android.sh
+  mode: dynamic
+  type: raw
+
+testRunnerCommand: ./support/run-android-realdevice.sh $test
+
+frameworkStatusOnly: true
+
+report: true
+partialReports:
+  - location: reports
+    type: xml
+    frameworkName: junit
+
+jobLabel: ['HYP', 'Maestro', 'Cucumber', 'Android-RD']

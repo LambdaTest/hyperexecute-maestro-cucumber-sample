@@ -1,0 +1,4 @@
+appId: QATestApp
+---
+- assertVisible:
+    text: "GPS"

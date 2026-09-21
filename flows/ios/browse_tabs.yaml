@@ -1,0 +1,46 @@
+appId: QATestApp
+---
+- assertVisible:
+    text: "Home"
+- tapOn:
+    text: "Home"
+    optional: true
+- takeScreenshot:
+    path: "screenshots/ios_02_home.png"
+
+- assertVisible:
+    text: "Live"
+- tapOn:
+    text: "Live"
+- takeScreenshot:
+    path: "screenshots/ios_03_live.png"
+
+- repeat:
+    times: 3
+    commands:
+      - assertVisible:
+          text: "Browser"
+      - tapOn:
+          text: "Browser"
+      - takeScreenshot:
+          path: "screenshots/ios_01_browser.png"
+
+      - assertVisible:
+          text: "Home"
+      - tapOn:
+          text: "Home"
+      - takeScreenshot:
+          path: "screenshots/ios_02_home.png"
+
+      - assertVisible:
+          text: "Live"
+      - tapOn:
+          text: "Live"
+      - takeScreenshot:
+          path: "screenshots/ios_03_live.png"
+
+- assertVisible:
+    text: "GPS"
+- tapOn: "GPS"
+- takeScreenshot:
+    path: "screenshots/ios_04_gps.png"

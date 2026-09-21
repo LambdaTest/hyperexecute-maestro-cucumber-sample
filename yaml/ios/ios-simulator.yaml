@@ -1,0 +1,70 @@
+# Define the version of the configuration file
+version: "0.2"
+
+# Enable autosplit for test execution
+autosplit: true
+
+# Set the concurrency level for test execution (2 devices in parallel)
+concurrency: 2
+
+# Specify the target platform for test execution (iOS in this case)
+runson: ios
+
+# Dynamic allocation requires static test discovery, but we use dynamic
+# discovery (./discover/ios.sh), so this must stay disabled.
+dynamicAllocation: false
+
+runtime:
+  - language: java
+    version: "21"
+  - language: node
+    version: "18"
+
+# Test framework configuration
+framework:
+  name: raw
+  args:
+    devices: [".*-.*", ".*-.*", ".*-.*"]
+    video: true
+    deviceLog: true
+    # Needs a .zip upload; swap for appPath if you prefer a local build.
+    # Reference build: apps/Proverbial_ios.zip (bundle id QATestApp,
+    # matches flows/ios/*.yaml as-is). Upload it, then swap <app_id> below.
+    appPath: apps/Proverbial_ios.zip
+    buildName: maestro-cucumber-ios-simulator
+    queueTimeout: 600
+    region: ap
+    disableReleaseDevice: true
+    reservation: false
+    isRealMobile: false
+    network: true
+    platformName: ios
+
+env:
+  MAESTRO: true
+  MAESTRO_LOGS_DIR: MaestroLogs
+
+pre:
+  - rm -rf node_modules
+  - npm install --no-audit --no-fund
+  - chmod +x ./support/setup-ios-simulator.sh
+  - chmod +x ./support/run-ios-simulator.sh
+  - chmod +x ./discover/ios.sh
+  - ./support/setup-ios-simulator.sh
+
+testDiscovery:
+  command: ./discover/ios.sh
+  mode: dynamic
+  type: raw
+
+testRunnerCommand: ./support/run-ios-simulator.sh $test
+
+frameworkStatusOnly: true
+
+report: true
+partialReports:
+  - location: reports
+    type: xml
+    frameworkName: junit
+
+jobLabel: ['HYP', 'Maestro', 'Cucumber', 'iOS', 'Simulator']

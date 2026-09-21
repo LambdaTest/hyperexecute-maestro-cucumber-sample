@@ -1,0 +1,78 @@
+# Define the version of the configuration file
+version: "0.2"
+
+# Enable autosplit for test execution
+autosplit: true
+
+# Set the concurrency level for test execution (2 devices in parallel)
+concurrency: 2
+
+# Specify the target platform for test execution (Android in this case)
+runson: android
+
+runtime:
+  - language: java
+    version: "21"
+  - language: node
+    version: "18"
+
+# Dynamic allocation requires static test discovery, but we use dynamic
+# discovery (./discover/android.sh), so this must stay disabled.
+dynamicAllocation: false
+
+# Test framework configuration
+framework:
+  # Name of the test framework (raw, since Cucumber + Maestro isn't a built-in framework)
+  name: raw
+  args:
+    # List of devices to run tests on
+    devices: [".*-.*", ".*-.*", ".*-.*"]
+    # Enable or disable video recording support
+    video: true
+    # Enable or disable device log support
+    deviceLog: true
+    # App to install (mandatory) - drop your build in apps/
+    appPath: apps/sample.apk
+    # Build name for identification on the automation dashboard
+    buildName: maestro-cucumber-android-emulator
+    # Timeout for device queue
+    queueTimeout: 600
+    region: ap
+    disableReleaseDevice: true
+    reservation: false
+    isRealMobile: false
+    network: true
+    platformName: android
+
+env:
+  MAESTRO: true
+  MAESTRO_LOGS_DIR: MaestroLogs
+
+# Pre-install required dependencies; the node needs java + node + maestro
+pre:
+  - rm -rf node_modules
+  - npm install --no-audit --no-fund
+  - chmod +x ./support/setup-android.sh
+  - chmod +x ./support/run-android-emulator.sh
+  - chmod +x ./discover/android.sh
+  - ./support/setup-android.sh
+
+# Test discovery configuration - walks features/android/*.feature at run time
+testDiscovery:
+  command: ./discover/android.sh
+  mode: dynamic
+  type: raw
+
+# Command to run each discovered feature file through Cucumber
+testRunnerCommand: ./support/run-android-emulator.sh $test
+
+# Only report the status of the test framework
+frameworkStatusOnly: true
+
+report: true
+partialReports:
+  - location: reports
+    type: xml
+    frameworkName: junit
+
+jobLabel: ['HYP', 'Maestro', 'Cucumber', 'Android', 'Emulator']

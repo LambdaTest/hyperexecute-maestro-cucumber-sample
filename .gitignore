@@ -1,0 +1,9 @@
+reports/
+package-lock.json
+node_modules/
+logs/
+hyperexecute-cli.log
+hyperexecuteupdate
+hyperexecute
+.DS_Store
+.ds_store

@@ -1,0 +1,4 @@
+appId: QATestApp
+---
+- launchApp
+- waitForAnimationToEnd

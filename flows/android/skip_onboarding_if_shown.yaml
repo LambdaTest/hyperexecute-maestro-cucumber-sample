@@ -1,0 +1,14 @@
+appId: org.wikipedia
+---
+- tapOn:
+    id: "org.wikipedia:id/fragment_onboarding_forward_button"
+    optional: true
+- tapOn:
+    id: "org.wikipedia:id/fragment_onboarding_forward_button"
+    optional: true
+- tapOn:
+    id: "org.wikipedia:id/fragment_onboarding_forward_button"
+    optional: true
+- tapOn:
+    id: "org.wikipedia:id/fragment_onboarding_done_button"
+    optional: true

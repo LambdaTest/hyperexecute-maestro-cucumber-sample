@@ -1,0 +1,7 @@
+appId: org.wikipedia
+---
+# clearState guarantees a fresh install state (onboarding not yet dismissed)
+# on every launch, since scenarios in the same task run sequentially against
+# the same app installation and would otherwise leak state between each other.
+- launchApp:
+    clearState: true

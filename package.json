@@ -1,0 +1,13 @@
+{
+  "name": "maestro-cucumber",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Gherkin feature files driving Maestro mobile UI flows on HyperExecute (TestMu AI / LambdaTest)",
+  "scripts": {
+    "test:android": "cucumber-js --profile android features/android/**/*.feature",
+    "test:ios": "cucumber-js --profile ios features/ios/**/*.feature"
+  },
+  "dependencies": {
+    "@cucumber/cucumber": "^10.9.0"
+  }
+}

@@ -1,0 +1,6 @@
+appId: org.wikipedia
+---
+- assertVisible:
+    id: "org.wikipedia:id/search_src_text"
+- takeScreenshot:
+    path: "screenshots/android_search_opened.png"
